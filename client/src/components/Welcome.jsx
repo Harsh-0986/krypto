@@ -23,14 +23,24 @@ const Input = ({ placeholder, name, type, value, handleChange }) => {
 	);
 };
 
-const handleSubmit = () => {};
-
 const Welcome = () => {
-	const { value } = useContext(TransactionContext);
+	const {
+		connectWallet,
+		currentAccount,
+		formData,
+		sendTransaction,
+		handleChange,
+	} = useContext(TransactionContext);
 
-	console.log(value);
+	const handleSubmit = (e) => {
+		const { addressTo, amount, keyword, message } = formData;
 
-	const connectWallet = () => {};
+		e.preventDefault();
+
+		if (!addressTo || !amount || !keyword || !message) return;
+
+		sendTransaction();
+	};
 
 	return (
 		<div className="flex w-full justify-center items-center">
@@ -43,15 +53,17 @@ const Welcome = () => {
 						Explore the crypto world. Buy and sell currency on
 						Krypt.
 					</p>
-					<button
-						type="button"
-						onClick={connectWallet}
-						className="flex flex-row justify-center items-center bg-[#2952e3] my-5 p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-					>
-						<p className="text-white text-base font-semibold">
-							Connect Wallet
-						</p>
-					</button>
+					{!currentAccount && (
+						<button
+							type="button"
+							onClick={connectWallet}
+							className="flex flex-row justify-center items-center bg-[#2952e3] my-5 p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+						>
+							<p className="text-white text-base font-semibold">
+								Connect Wallet
+							</p>
+						</button>
+					)}
 					<div className="grid sm:grid-cols-3 grid-cols-2 width-full mt-10">
 						<div className={`rounded-tl-2xl ${commonStyles}`}>
 							Reliability
@@ -94,25 +106,25 @@ const Welcome = () => {
 							placeholder="Address To"
 							name="addressTo"
 							type="text"
-							handleChange={() => {}}
+							handleChange={handleChange}
 						/>
 						<Input
 							placeholder="Amount (ETH)"
 							name="amount"
 							type="number"
-							handleChange={() => {}}
+							handleChange={handleChange}
 						/>
 						<Input
 							placeholder="Keyword (GIF)"
-							name=""
+							name="keyword"
 							type="text"
-							handleChange={() => {}}
+							handleChange={handleChange}
 						/>
 						<Input
 							placeholder="Enter message"
 							name="message"
 							type="text"
-							handleChange={() => {}}
+							handleChange={handleChange}
 						/>
 
 						<div className="h-[1px] w-full bg-gray-400 my-2" />
